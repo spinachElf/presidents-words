@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<head>
+	<meta charset="utf-8">
+	<title>presidents' words </title>
+	<meta name="description" content="typography1 2017 tiling project">
+	<meta property="og:type" content="website">
+	<meta property="og:url" content="https://hknudesign.github.io/image-type/">
+	<meta property="og:image" content="./img/thumb.jpg">
+	<meta property="og:title" content="typography1 2017 tiling project">
+	<meta property="og:description" content="typography 2017 tiling project">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"/>
+	<link rel='stylesheet' href='./normalize.css'>
+	<style>
+		header{width:30em; position: fixed; right:0px; bottom:0px; background: blue; color: white; height:1.5em;line-height: 1.5em;padding-top: 5px; padding-left: 3px;}
+		#cursor{ animation: 1s blink step-end infinite; display: inline-block; vertical-align: top;}
+		@keyframes blink {
+  			from, to { background: transparent; }
+  			50% { background: blue; }
+		}
+	</style>
+</head>
+<body>
+	<header>
+		대통령의 말
+		<div style="float:right">20px&nbsp;<input type="range" id="fontSize">&nbsp;400px&nbsp;</div>
+	</header>
+	<section>
+		<div id="cursor">&nbsp;</div>
+	</section>
+		
+<script>
+	var typeLink = {
+		"97":"a","65":"a",
+		"98":"b","66":"b",
+		"99":"c","67":"c",
+		"100":"d","68":"d",
+		"101":"e","69":"e",
+		"102":"f","70":"f",
+		"103":"g","71":"g",
+		"104":"h","72":"h",
+		"105":"i","73":"i",
+		"106":"j","74":"j",
+		"107":"k","75":"k",
+		"108":"l","76":"l",
+		"109":"m","77":"m",
+		"110":"n","78":"n",
+		"111":"o","79":"o",
+		"112":"p","80":"p",
+		"113":"q","81":"q",
+		"114":"r","82":"r",
+		"115":"s","83":"s",
+		"116":"t","84":"t",
+		"117":"u","85":"u",
+		"118":"v","86":"v",
+		"119":"w","87":"w",
+		"120":"x","88":"x",
+		"121":"y","89":"y",
+		"122":"z","90":"z",
+		"49":"exc","56":"aster",
+		"55":"amp","51":"hash",
+		"50":"at","191":"question"
+	};
+	var snd1 = new Audio('./snd/key1.mp3');
+	var snd2 = new Audio('./snd/key2.mp3');
+	var snd3 = new Audio('./snd/key3.mp3');
+	var snd4 = new Audio('./snd/key4.mp3');
+	var snd5 = new Audio('./snd/key5.mp3');
+
+	var leading = 0;
+	document.getElementsByTagName("body")[0].onload = function(){ 
+		console.log("ok2");
+		var k = document.getElementById("fontSize");
+		k.min = 20;
+		k.max = 400;
+		k.value = 210;
+		k.addEventListener("input", function() {
+			cursor.style.width = k.value/2 + "px"; 
+			cursor.style.height = k.value + "px";
+			var t =  document.getElementsByTagName("img");
+			for(var i=0;i<t.length;i++){
+				t[i].style.height = k.value + "px";
+			}
+			var s = document.getElementsByClassName("space");
+			for(i=0;i<s.length;i++){
+				s[i].style.height = k.value + "px";
+			}	
+		},false);
+		console.log("ok");
+		cursor.style.width = k.value/2 + "px"; 
+		cursor.style.height = k.value + "px";
+	}
+	
+	document.onkeydown = function(){
+		var container = document.getElementsByTagName("section")[0];
+		console.log(event.keyCode);
+		if(event.keyCode == 32){
+			var space = document.createElement("div");
+			space.style.width = fontSize.value/2 + "px";
+			space.style.height = fontSize.value + "px";
+			space.style.background = "blue";
+			space.style.display = "inline-block";
+			space.setAttribute("class", "space");
+			container.insertBefore(space, cursor);
+			sndPlay();	
+		}else if(event.keyCode == 8){
+			event.preventDefault();
+			container.removeChild(container.childNodes[container.childNodes.length - 3]);
+			sndPlay();	
+		}else if(event.keyCode == 13){
+			var lead = document.createElement("div");
+			lead.style.width = "100%";
+			lead.style.height = leading + "em";
+			container.insertBefore(lead, cursor);
+			sndPlay();	
+		}else if(typeLink[event.keyCode]){
+			sndPlay();	
+			var link = typeLink[event.keyCode];
+			var t = document.createElement("img");
+			t.setAttribute("src","./img/"+link+".png");
+			t.setAttribute("class","type");
+			t.style.height = fontSize.value + "px";
+			container.insertBefore(t, cursor);
+		}else if((event.keyCode =! 16)&&(event.keyCode =! 91)){
+			var c = document.createElement("span");
+			c.innerHTML = event.key;
+			container.insertBefore(c, cursor);
+		}
+	}
+
+	function sndPlay(){
+		snd1.load();
+		snd2.load();
+		snd3.load();
+		snd4.load();
+		snd5.load();
+		var k = (Math.floor(Math.random()*100 + 1))%5;
+		switch(k){
+			case 0:
+				snd1.play();
+				break;
+			case 1:
+				snd2.play();
+				break;
+			case 2:
+				snd3.play();
+				break;
+			case 3:
+				snd4.play();
+				break;
+			case 4:
+				snd5.play();
+				break;
+		}
+	}
+
+</script>	
+</body>
